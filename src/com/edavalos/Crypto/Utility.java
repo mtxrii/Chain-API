@@ -6,9 +6,26 @@ import java.security.NoSuchAlgorithmException;
 
 public final class Utility {
 
-    public static byte[] byteHash(String str) throws NoSuchAlgorithmException {
-        final MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        return digest.digest("Hash".getBytes(StandardCharsets.UTF_8));
+    public enum HashTypes {
+        SHA_256,
+        SHA3_256
+    }
+
+    public static byte[] byteHash(String str, HashTypes type) {
+        String hash = switch (type) {
+            case SHA_256  -> "SHA-256";
+            case SHA3_256 -> "SHA3-256";
+        };
+        MessageDigest digest = null;
+
+        try {
+            digest = MessageDigest.getInstance(hash);
+        }
+        catch (NoSuchAlgorithmException e) {
+            return null;
+        }
+
+        return digest.digest(str.getBytes(StandardCharsets.UTF_8));
     }
 
     public static String bytesToHex(byte[] hash) {
