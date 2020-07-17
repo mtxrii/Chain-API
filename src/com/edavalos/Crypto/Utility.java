@@ -16,7 +16,7 @@ public final class Utility {
             case SHA_256  -> "SHA-256";
             case SHA3_256 -> "SHA3-256";
         };
-        MessageDigest digest = null;
+        MessageDigest digest;
 
         try {
             digest = MessageDigest.getInstance(hash);
