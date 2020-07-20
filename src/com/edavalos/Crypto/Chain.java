@@ -1,5 +1,7 @@
 package com.edavalos.Crypto;
 
+import java.util.Date;
+
 public interface Chain<T> {
 
     // Seals current block and creates new one. Returns false if failed
@@ -20,6 +22,9 @@ public interface Chain<T> {
 
     // If item is in this chain, returns the first block id of which it is found. Otherwise returns -1
     int contains(T item);
+
+    // Returns id of block with timestamp nearest to the one provided, or -1 if chain is empty
+    int soonestTo(Date timestamp);
 
     // Returns a list of every item in block of specified id. Returns null if id is out of range
     T getContents(int blockID);

@@ -3,10 +3,12 @@ package com.edavalos.Crypto.Components;
 import com.edavalos.Crypto.Utility;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Block<T> {
     private final int id;
+    private final Date timestamp;
     private byte[] proofHash;
     private final byte[] priorHash;
     private final List<Item<T>> items;
@@ -14,6 +16,7 @@ public class Block<T> {
 
     public Block(int id, byte[] previousBlockHash) {
         this.id = id;
+        timestamp = new Date();
         priorHash = previousBlockHash;
         items = new ArrayList<>();
         sealed = false;
@@ -42,12 +45,17 @@ public class Block<T> {
         return id;
     }
 
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
     public void encrypt(Utility.HashTypes hash) {
         sealed = true;
         proofHash = Utility.byteHash(this.toString(), hash);
     }
 
 /** BLOCK ID: _id_
+ *  TIMESTAMP: _timestamp_
  *  PROOF HASH: _proofHash_ (might be null)
  *  PRIOR HASH: _priorHash_
  *
@@ -69,6 +77,7 @@ public class Block<T> {
         }
 
         return "BLOCK ID: " + id + "\n" +
+               "TIMESTAMP: " + timestamp.toString() + "\n" +
                "PROOF HASH: " + proof + "\n" +
                "PRIOR HASH: " + prior + "\n" +
                "\n" +
