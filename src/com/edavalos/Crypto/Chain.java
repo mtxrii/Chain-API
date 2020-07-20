@@ -38,7 +38,4 @@ public interface Chain<T> {
     // Converts entire chain to a 2D array
     T[][] toArray();
 
-    // Visualizes chain
-    String toString();
-
 }
