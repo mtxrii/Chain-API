@@ -1,6 +1,9 @@
 package com.edavalos.Crypto.Components;
 
+import com.edavalos.Crypto.Utility;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Block<T> {
@@ -46,21 +49,24 @@ public class Block<T> {
     }
 
 /** #############################################
- *  # BLOCK ID: _id_                            #
- *  # PROOF HASH: _proofHash_ (might be null)   #
- *  # PRIOR HASH: _priorHash_                   #
- *  #                                           #
- *  # CONTENTS:                                 #
- *  # "transaction 1"                           #
- *  # "transaction 2"                           #
- *  # "transaction 3"                           #
- *  # "transaction 4"                           #
- *  # "transaction 5"                           #
+ *  BLOCK ID: _id_
+ *  PROOF HASH: _proofHash_ (might be null)
+ *  PRIOR HASH: _priorHash_
+ *
+ *  CONTENTS:
+ *  "transaction 1"
+ *  "transaction 2"
+ *  "transaction 3"
+ *  "transaction 4"
+ *  "transaction 5"
  *  #############################################
  */
 
     @Override
     public String toString() {
-        // do stuff
+        String proof = (this.getProofHash() != null) ? Utility.bytesToHex(this.getProofHash()) : "[ Not created yet ]";
+        String prior =
+        return "BLOCK ID: " + id + "\n" +
+                "PROOF HASH: " +
     }
 }
