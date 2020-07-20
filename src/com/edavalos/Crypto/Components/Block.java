@@ -54,19 +54,28 @@ public class Block<T> {
  *  PRIOR HASH: _priorHash_
  *
  *  CONTENTS:
- *  "transaction 1"
- *  "transaction 2"
- *  "transaction 3"
- *  "transaction 4"
- *  "transaction 5"
+ *  - "transaction 1"
+ *  - "transaction 2"
+ *  - "transaction 3"
+ *  - "transaction 4"
+ *  - "transaction 5"
  *  #############################################
  */
 
     @Override
     public String toString() {
         String proof = (this.getProofHash() != null) ? Utility.bytesToHex(this.getProofHash()) : "[ Not created yet ]";
-        String prior =
+        String prior = Utility.bytesToHex(this.getPriorHash());
+
+        StringBuilder items = new StringBuilder();
+        for (Item<T> item : this.items) {
+            items.append("- ").append(item.toString());
+        }
+
         return "BLOCK ID: " + id + "\n" +
-                "PROOF HASH: " +
+               "PROOF HASH: " + proof + "\n" +
+               "PRIOR HASH: " + prior + "\n" +
+               "\n" +
+               "CONTENTS:" + items.toString();
     }
 }
