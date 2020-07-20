@@ -3,7 +3,6 @@ package com.edavalos.Crypto.Components;
 import com.edavalos.Crypto.Utility;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Block<T> {
@@ -43,13 +42,12 @@ public class Block<T> {
         return id;
     }
 
-    public void encrypt() {
+    public void encrypt(Utility.HashTypes hash) {
         sealed = true;
-        // do stuff
+        proofHash = Utility.byteHash(this.toString(), hash);
     }
 
-/** #############################################
- *  BLOCK ID: _id_
+/** BLOCK ID: _id_
  *  PROOF HASH: _proofHash_ (might be null)
  *  PRIOR HASH: _priorHash_
  *
@@ -59,9 +57,7 @@ public class Block<T> {
  *  - "transaction 3"
  *  - "transaction 4"
  *  - "transaction 5"
- *  #############################################
  */
-
     @Override
     public String toString() {
         String proof = (this.getProofHash() != null) ? Utility.bytesToHex(this.getProofHash()) : "[ Not created yet ]";
@@ -69,7 +65,7 @@ public class Block<T> {
 
         StringBuilder items = new StringBuilder();
         for (Item<T> item : this.items) {
-            items.append("- ").append(item.toString());
+            items.append("- \"").append(item.toString()).append("\"");
         }
 
         return "BLOCK ID: " + id + "\n" +
