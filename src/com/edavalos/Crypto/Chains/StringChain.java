@@ -76,7 +76,12 @@ public final class StringChain implements Chain<String> {
 
     @Override
     public String[][] toArray() {
-        return new String[0][];
+        String[][] allBlocks = new String[blocks.size() + 1][];
+        for (int i = 0; i < blocks.size(); i++) {
+            allBlocks[i] = blocks.get(i).getItems();
+        }
+        allBlocks[blocks.size()] = current.getItems();
+        return allBlocks;
     }
 
     @Override

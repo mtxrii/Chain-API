@@ -37,8 +37,12 @@ public class Block<T> {
         return sealed ? proofHash : null;
     }
 
-    public List<Item<T>> getItems() {
-        return items;
+    public String[] getItems() {
+        String[] itemList = new String[items.size()];
+        for (int i = 0; i < items.size(); i++) {
+            itemList[i] = items.get(i).toString();
+        }
+        return itemList;
     }
 
     public int getId() {
