@@ -47,17 +47,21 @@ public final class StringChain implements Chain<String> {
 
     @Override
     public int size() {
-        return 0;
+        return blocks.size() + 1;
     }
 
     @Override
     public int totalItems() {
-        return 0;
+        int counter = 0;
+        for (Block<String> block : blocks) {
+            counter += block.size();
+        }
+        return counter + current.size();
     }
 
     @Override
     public void discardBlock() {
-
+        current = new Block<>(blocks.size(), current.getProofHash());
     }
 
     @Override

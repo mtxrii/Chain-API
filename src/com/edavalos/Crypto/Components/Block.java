@@ -54,6 +54,10 @@ public class Block<T> {
         return timestamp;
     }
 
+    public int size() {
+        return items.size();
+    }
+
     public void seal(Utility.HashTypes hash) {
         if (sealed) return;
 
