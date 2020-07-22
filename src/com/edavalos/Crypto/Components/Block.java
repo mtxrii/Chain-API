@@ -41,7 +41,7 @@ public class Block<T> {
     public String[] getItems() {
         String[] itemList = new String[items.size()];
         for (int i = 0; i < items.size(); i++) {
-            itemList[i] = items.get(i).toString();
+            itemList[i] = items.get(i).getContents().toString();
         }
         return itemList;
     }
@@ -52,6 +52,13 @@ public class Block<T> {
 
     public Date getTimestamp() {
         return timestamp;
+    }
+
+    public boolean contains(T thing) {
+        for (Item<T> item : items) {
+            if (item.getContents().equals(thing)) return true;
+        }
+        return false;
     }
 
     public int size() {

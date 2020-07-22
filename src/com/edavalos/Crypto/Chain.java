@@ -20,8 +20,8 @@ public interface Chain<T> {
     // Discards current block and everything in it, and creates a new one to replace it
     void discardBlock();
 
-    // If item is in this chain, returns the first block id of which it is found. Otherwise returns -1
-    int contains(T item);
+    // If item is in this chain, returns the first block id of which it is found in. Otherwise returns -1
+    int find(T item);
 
     // Returns id of block with timestamp nearest to the one provided, or -1 if chain is empty
     int soonestTo(Date timestamp);
@@ -32,7 +32,7 @@ public interface Chain<T> {
     // Checks if current block is empty
     boolean isCurrentEmpty();
 
-    // Checks if entire chain is empty
+    // Checks if every block in chain is empty
     boolean isEmpty();
 
     // Converts entire chain to a 2D array

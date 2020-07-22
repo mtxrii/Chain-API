@@ -65,8 +65,12 @@ public final class StringChain implements Chain<String> {
     }
 
     @Override
-    public int contains(String item) {
-        return 0;
+    public int find(String item) {
+        for (Block<String> block : blocks) {
+            if (block.contains(item)) return block.getId();
+        }
+        if (current.contains(item)) return current.getId();
+        return -1;
     }
 
     @Override
