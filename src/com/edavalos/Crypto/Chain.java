@@ -27,7 +27,7 @@ public interface Chain<T> {
     int soonestTo(Date timestamp);
 
     // Returns a list of every item in block of specified id. Returns null if id is out of range
-    T getContents(int blockID);
+    T[] getContents(int blockID);
 
     // Checks if current block is empty
     boolean isCurrentEmpty();

@@ -38,10 +38,10 @@ public class Block<T> {
         return sealed ? proofHash : null;
     }
 
-    public String[] getItems() {
-        String[] itemList = new String[items.size()];
+    public T[] getItems() {
+        T[] itemList = (T[]) new Object[items.size()];
         for (int i = 0; i < items.size(); i++) {
-            itemList[i] = items.get(i).getContents().toString();
+            itemList[i] = items.get(i).getContents();
         }
         return itemList;
     }

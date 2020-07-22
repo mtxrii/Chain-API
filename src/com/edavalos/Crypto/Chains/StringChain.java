@@ -79,18 +79,31 @@ public final class StringChain implements Chain<String> {
     }
 
     @Override
-    public String getContents(int blockID) {
-        return null;
+    public String[] getContents(int blockID) {
+        String[] contents;
+        try {
+            contents = blocks.get(blockID).getItems();
+        }
+        catch (IndexOutOfBoundsException e) {
+            if (current.getId() == blockID) {
+                return current.getItems();
+            }
+            return null;
+        }
+        return contents;
     }
 
     @Override
     public boolean isCurrentEmpty() {
-        return false;
+        return (current.getItems().length < 1);
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        for (Block<String> block : blocks) {
+            if (block.getItems().length >= 1) return false;
+        }
+        return this.isCurrentEmpty();
     }
 
     @Override
