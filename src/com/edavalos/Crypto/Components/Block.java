@@ -22,11 +22,12 @@ public class Block<T> {
         sealed = false;
     }
 
-    public void addItem(T item) {
-        if (!sealed) {
-            Item<T> newItem = new Item<>(items.size(), item);
-            items.add(newItem);
-        }
+    public boolean addItem(T item) {
+        if (sealed) return false;
+
+        Item<T> newItem = new Item<>(items.size(), item);
+        items.add(newItem);
+        return true;
     }
 
     public byte[] getPriorHash() {
@@ -53,7 +54,9 @@ public class Block<T> {
         return timestamp;
     }
 
-    public void encrypt(Utility.HashTypes hash) {
+    public void seal(Utility.HashTypes hash) {
+        if (sealed) return;
+
         sealed = true;
         proofHash = Utility.byteHash(this.toString(), hash);
     }
@@ -64,11 +67,11 @@ public class Block<T> {
  *  PRIOR HASH: _priorHash_
  *
  *  CONTENTS:
- *  - "transaction 1"
- *  - "transaction 2"
- *  - "transaction 3"
- *  - "transaction 4"
- *  - "transaction 5"
+ *   - "transaction 1" (0)
+ *   - "transaction 2" (1)
+ *   - "transaction 3" (2)
+ *   - "transaction 4" (3)
+ *   - "transaction 5" (4)
  */
     @Override
     public String toString() {
@@ -77,7 +80,7 @@ public class Block<T> {
 
         StringBuilder items = new StringBuilder();
         for (Item<T> item : this.items) {
-            items.append("- \"").append(item.toString()).append("\"");
+            items.append("\n - \"").append(item.getContents().toString()).append("\" (").append(item.getId()).append(")");
         }
 
         return "BLOCK ID: " + id + "\n" +

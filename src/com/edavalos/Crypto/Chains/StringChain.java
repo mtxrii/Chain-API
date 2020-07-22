@@ -10,6 +10,7 @@ import java.util.List;
 
 public final class StringChain implements Chain<String> {
     private final byte[] genesisHash;
+    private final Utility.HashTypes hashType;
     private final List<Block<String>> blocks;
     private Block<String> current;
 
@@ -17,21 +18,31 @@ public final class StringChain implements Chain<String> {
         genesisHash = Utility.byteHash(genesisSeed, hashType);
         blocks = new ArrayList<>();
         current = new Block<>(0, genesisHash);
+        this.hashType = hashType;
     }
 
     @Override
     public boolean nextBlock() {
-        return false;
+        if (current.getProofHash() == null) return false;
+
+        current.seal(hashType);
+        blocks.add(current);
+        current = new Block<>(blocks.size(), current.getProofHash());
+        return true;
     }
 
     @Override
     public boolean add(String item) {
-        return false;
+        return current.addItem(item);
     }
 
     @Override
     public boolean add(String[] items) {
-        return false;
+        if (!current.addItem(items[0])) return false;
+        for (int i = 1; i < items.length; i++) {
+            current.addItem(items[i]);
+        }
+        return true;
     }
 
     @Override
