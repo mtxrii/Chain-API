@@ -75,7 +75,18 @@ public final class StringChain implements Chain<String> {
 
     @Override
     public int soonestTo(Date timestamp) {
-        return 0;
+        long diff = Math.abs(timestamp.getTime() - current.getTimestamp().getTime());
+        Block<String> comp = current;
+
+        for (Block<String> block : blocks) {
+            long newDiff = Math.abs(timestamp.getTime() - block.getTimestamp().getTime());
+            if (newDiff < diff) {
+                diff = newDiff;
+                comp = block;
+            }
+        }
+
+        return comp.getId();
     }
 
     @Override
@@ -118,6 +129,12 @@ public final class StringChain implements Chain<String> {
 
     @Override
     public String toString() {
-        return null;
+        String border = "==================================================\n" +
+                        "==================================================\n";
+        StringBuilder chain = new StringBuilder();
+        for (Block<String> block : blocks) {
+            chain.append(border).append(block.toString()).append("\n");
+        }
+        return chain + border + current.toString() + "\n" + border;
     }
 }
