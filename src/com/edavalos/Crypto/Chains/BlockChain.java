@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public final class BlockChain<T> implements Chain<T> {
+public final class BlockChain implements Chain<Object> {
     private final Utility.HashTypes hashType;
-    private final List<Block<T>> blocks;
-    private Block<T> current;
+    private final List<Block<Object>> blocks;
+    private Block<Object> current;
 
     public BlockChain(String genesisSeed, Utility.HashTypes hashType) {
         byte[] genesisHash = Utility.byteHash(genesisSeed, hashType);
@@ -31,12 +31,12 @@ public final class BlockChain<T> implements Chain<T> {
     }
 
     @Override
-    public boolean add(T item) {
+    public boolean add(Object item) {
         return current.addItem(item);
     }
 
     @Override
-    public boolean add(T[] items) {
+    public boolean add(Object[] items) {
         if (!current.addItem(items[0])) return false;
         for (int i = 1; i < items.length; i++) {
             current.addItem(items[i]);
@@ -52,7 +52,7 @@ public final class BlockChain<T> implements Chain<T> {
     @Override
     public int totalItems() {
         int counter = 0;
-        for (Block<T> block : blocks) {
+        for (Block<Object> block : blocks) {
             counter += block.size();
         }
         return counter + current.size();
@@ -64,8 +64,8 @@ public final class BlockChain<T> implements Chain<T> {
     }
 
     @Override
-    public int find(T item) {
-        for (Block<T> block : blocks) {
+    public int find(Object item) {
+        for (Block<Object> block : blocks) {
             if (block.contains(item)) return block.getId();
         }
         if (current.contains(item)) return current.getId();
@@ -75,9 +75,9 @@ public final class BlockChain<T> implements Chain<T> {
     @Override
     public int soonestTo(Date timestamp) {
         long diff = Math.abs(timestamp.getTime() - current.getTimestamp().getTime());
-        Block<T> comp = current;
+        Block<Object> comp = current;
 
-        for (Block<T> block : blocks) {
+        for (Block<Object> block : blocks) {
             long newDiff = Math.abs(timestamp.getTime() - block.getTimestamp().getTime());
             if (newDiff < diff) {
                 diff = newDiff;
@@ -89,16 +89,16 @@ public final class BlockChain<T> implements Chain<T> {
     }
 
     @Override
-    public T[] getContents(int blockID) {
-        T[] contents;
+    public Object[] getContents(int blockID) {
+        Object[] contents;
         try {
-            Block<T> b = blocks.get(blockID);
-            b.resize(T[].class);
+            Block<Object> b = blocks.get(blockID);
+            b.resize(Object[].class);
             contents = b.getItems();
         }
         catch (IndexOutOfBoundsException e) {
             if (current.getId() == blockID) {
-                current.resize(T[].class);
+                current.resize(Object[].class);
                 return current.getItems();
             }
             return null;
@@ -113,21 +113,21 @@ public final class BlockChain<T> implements Chain<T> {
 
     @Override
     public boolean isEmpty() {
-        for (Block<T> block : blocks) {
+        for (Block<Object> block : blocks) {
             if (!block.isEmpty()) return false;
         }
         return this.isCurrentEmpty();
     }
 
     @Override
-    public T[][] toArray() {
-        T[][] allBlocks = new T[blocks.size() + 1][];
+    public Object[][] toArray() {
+        Object[][] allBlocks = new Object[blocks.size() + 1][];
         for (int i = 0; i < blocks.size(); i++) {
-            Block<T> b = blocks.get(i);
-            b.resize(T[].class);
+            Block<Object> b = blocks.get(i);
+            b.resize(Object[].class);
             allBlocks[i] = b.getItems();
         }
-        current.resize(T[].class);
+        current.resize(Object[].class);
         allBlocks[blocks.size()] = current.getItems();
         return allBlocks;
     }
@@ -137,7 +137,7 @@ public final class BlockChain<T> implements Chain<T> {
         String border = "==================================================\n" +
                         "==================================================\n";
         StringBuilder chain = new StringBuilder();
-        for (Block<T> block : blocks) {
+        for (Block<Object> block : blocks) {
             chain.append(border).append(block.toString()).append("\n");
         }
         return chain + border + current.toString() + "\n" + border;
