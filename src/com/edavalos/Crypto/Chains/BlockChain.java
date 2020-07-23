@@ -36,7 +36,7 @@ public final class BlockChain implements Chain<Object> {
     }
 
     @Override
-    public boolean add(Object[] items) {
+    public boolean add(Object... items) {
         if (!current.addItem(items[0])) return false;
         for (int i = 1; i < items.length; i++) {
             current.addItem(items[i]);

@@ -9,7 +9,7 @@ public interface Chain<T> {
 
     // Adds something to the current block. Returns false if failed
     boolean add(T item);
-    boolean add(T[] items);
+    boolean add(T... items);
 
     // Returns amount of blocks in chain including current
     int size();

@@ -36,7 +36,7 @@ public final class StringChain implements Chain<String> {
     }
 
     @Override
-    public boolean add(String[] items) {
+    public boolean add(String... items) {
         if (!current.addItem(items[0])) return false;
         for (int i = 1; i < items.length; i++) {
             current.addItem(items[i]);
