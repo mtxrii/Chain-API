@@ -2,19 +2,19 @@ package com.edavalos.Crypto.Chains;
 
 import com.edavalos.Crypto.Chain;
 import com.edavalos.Crypto.Components.Block;
-import com.edavalos.Crypto.Utility;
+import com.edavalos.Crypto.Util;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public final class BlockChain implements Chain<Object> {
-    private final Utility.HashTypes hashType;
+    private final Util.HashType hashType;
     private final List<Block<Object>> blocks;
     private Block<Object> current;
 
-    public BlockChain(String genesisSeed, Utility.HashTypes hashType) {
-        byte[] genesisHash = Utility.byteHash(genesisSeed, hashType);
+    public BlockChain(String genesisSeed, Util.HashType hashType) {
+        byte[] genesisHash = Util.byteHash(genesisSeed, hashType);
         blocks = new ArrayList<>();
         current = new Block<>(0, genesisHash);
         this.hashType = hashType;

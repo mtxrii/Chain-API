@@ -14,7 +14,7 @@ public final class Verifications {
     }
 
     private static void StringChainTest() throws InterruptedException {
-        StringChain chain = new StringChain("start", Utility.HashTypes.SHA3_256);
+        StringChain chain = new StringChain("start", Util.HashType.SHA3_256);
 
         chain.add("PERL contributed $40");
         chain.add("RUBY contributed $12");

@@ -4,14 +4,14 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public final class Utility {
+public final class Util {
 
-    public enum HashTypes {
+    public enum HashType {
         SHA_256,
         SHA3_256
     }
 
-    public static byte[] byteHash(String str, HashTypes type) {
+    public static byte[] byteHash(String str, HashType type) {
         String hash = switch (type) {
             case SHA_256  -> "SHA-256";
             case SHA3_256 -> "SHA3-256";

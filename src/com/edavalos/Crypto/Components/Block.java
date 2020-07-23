@@ -1,6 +1,6 @@
 package com.edavalos.Crypto.Components;
 
-import com.edavalos.Crypto.Utility;
+import com.edavalos.Crypto.Util;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -74,11 +74,11 @@ public class Block<T> {
         return items.size();
     }
 
-    public void seal(Utility.HashTypes hash) {
+    public void seal(Util.HashType hash) {
         if (sealed) return;
 
         sealed = true;
-        proofHash = Utility.byteHash(this.toString(), hash);
+        proofHash = Util.byteHash(this.toString(), hash);
     }
 
 /** BLOCK ID: _id_
@@ -95,8 +95,8 @@ public class Block<T> {
  */
     @Override
     public String toString() {
-        String proof = (this.getProofHash() != null) ? Utility.bytesToHex(this.getProofHash()) : "[ Not created yet ]";
-        String prior = Utility.bytesToHex(this.getPriorHash());
+        String proof = (this.getProofHash() != null) ? Util.bytesToHex(this.getProofHash()) : "[ Not created yet ]";
+        String prior = Util.bytesToHex(this.getPriorHash());
 
         StringBuilder items = new StringBuilder();
         for (Item<T> item : this.items) {
