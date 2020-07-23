@@ -8,6 +8,12 @@ import java.util.Date;
 
 public final class Verifications {
     public static void main(String[] args) throws InterruptedException {
+        StringChainTest();
+
+        IntegerChainTest();
+    }
+
+    private static void StringChainTest() throws InterruptedException {
         StringChain chain = new StringChain("start", Utility.HashTypes.SHA3_256);
 
         chain.add("PERL contributed $40");
@@ -47,6 +53,9 @@ public final class Verifications {
         for (String[] contents : blocks) {
             System.out.println(Arrays.toString(contents));
         }
+    }
+
+    private static void IntegerChainTest() throws InterruptedException {
 
     }
 }
