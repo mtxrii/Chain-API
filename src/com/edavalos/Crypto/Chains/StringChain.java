@@ -9,13 +9,12 @@ import java.util.Date;
 import java.util.List;
 
 public final class StringChain implements Chain<String> {
-    private final byte[] genesisHash;
     private final Utility.HashTypes hashType;
     private final List<Block<String>> blocks;
     private Block<String> current;
 
     public StringChain(String genesisSeed, Utility.HashTypes hashType) {
-        genesisHash = Utility.byteHash(genesisSeed, hashType);
+        byte[] genesisHash = Utility.byteHash(genesisSeed, hashType);
         blocks = new ArrayList<>();
         current = new Block<>(0, genesisHash);
         this.hashType = hashType;
@@ -23,9 +22,9 @@ public final class StringChain implements Chain<String> {
 
     @Override
     public boolean nextBlock() {
+        current.seal(hashType);
         if (current.getProofHash() == null) return false;
 
-        current.seal(hashType);
         blocks.add(current);
         current = new Block<>(blocks.size(), current.getProofHash());
         return true;
@@ -61,7 +60,7 @@ public final class StringChain implements Chain<String> {
 
     @Override
     public void discardBlock() {
-        current = new Block<>(blocks.size(), current.getProofHash());
+        current = new Block<>(blocks.size(), current.getPriorHash());
     }
 
     @Override
@@ -93,10 +92,13 @@ public final class StringChain implements Chain<String> {
     public String[] getContents(int blockID) {
         String[] contents;
         try {
-            contents = blocks.get(blockID).getItems();
+            Block<String> b = blocks.get(blockID);
+            b.resize(String[].class);
+            contents = b.getItems();
         }
         catch (IndexOutOfBoundsException e) {
             if (current.getId() == blockID) {
+                current.resize(String[].class);
                 return current.getItems();
             }
             return null;
@@ -106,13 +108,13 @@ public final class StringChain implements Chain<String> {
 
     @Override
     public boolean isCurrentEmpty() {
-        return (current.getItems().length < 1);
+        return current.isEmpty();
     }
 
     @Override
     public boolean isEmpty() {
         for (Block<String> block : blocks) {
-            if (block.getItems().length >= 1) return false;
+            if (!block.isEmpty()) return false;
         }
         return this.isCurrentEmpty();
     }
@@ -121,8 +123,11 @@ public final class StringChain implements Chain<String> {
     public String[][] toArray() {
         String[][] allBlocks = new String[blocks.size() + 1][];
         for (int i = 0; i < blocks.size(); i++) {
-            allBlocks[i] = blocks.get(i).getItems();
+            Block<String> b = blocks.get(i);
+            b.resize(String[].class);
+            allBlocks[i] = b.getItems();
         }
+        current.resize(String[].class);
         allBlocks[blocks.size()] = current.getItems();
         return allBlocks;
     }

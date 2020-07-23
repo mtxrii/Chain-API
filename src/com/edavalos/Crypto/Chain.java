@@ -11,7 +11,7 @@ public interface Chain<T> {
     boolean add(T item);
     boolean add(T[] items);
 
-    // Returns number of blocks
+    // Returns amount of blocks in chain including current
     int size();
 
     // Returns total number of items in every block

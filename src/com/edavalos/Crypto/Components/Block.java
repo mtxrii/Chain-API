@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import java.lang.reflect.Array;
+
 public class Block<T> {
     private final int id;
     private final Date timestamp;
@@ -13,6 +15,8 @@ public class Block<T> {
     private final byte[] priorHash;
     private final List<Item<T>> items;
     private boolean sealed;
+
+    private T[] itemArray;
 
     public Block(int id, byte[] previousBlockHash) {
         this.id = id;
@@ -39,11 +43,12 @@ public class Block<T> {
     }
 
     public T[] getItems() {
-        T[] itemList = (T[]) new Object[items.size()];
+        if (itemArray == null || itemArray.length != items.size()) return null;
+
         for (int i = 0; i < items.size(); i++) {
-            itemList[i] = items.get(i).getContents();
+            itemArray[i] = items.get(i).getContents();
         }
-        return itemList;
+        return itemArray;
     }
 
     public int getId() {
@@ -52,6 +57,10 @@ public class Block<T> {
 
     public Date getTimestamp() {
         return timestamp;
+    }
+
+    public boolean isEmpty() {
+        return items.isEmpty();
     }
 
     public boolean contains(T thing) {
@@ -96,9 +105,15 @@ public class Block<T> {
 
         return "BLOCK ID: " + id + "\n" +
                "TIMESTAMP: " + timestamp.toString() + "\n" +
-               "PROOF HASH: " + proof + "\n" +
                "PRIOR HASH: " + prior + "\n" +
+               "BLOCK HASH: " + proof + "\n" +
                "\n" +
                "CONTENTS:" + items.toString();
+    }
+
+    // updates the item array size
+    public void resize(Class<T[]> clazz) {
+        int len = items.size();
+        itemArray = clazz.cast(Array.newInstance(clazz.getComponentType(), len));
     }
 }
