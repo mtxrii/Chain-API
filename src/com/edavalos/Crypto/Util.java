@@ -1,5 +1,7 @@
 package com.edavalos.Crypto;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -38,8 +40,20 @@ public final class Util {
         return hexString.toString();
     }
 
-    public static boolean save(String file) {
-
+    public static boolean save(String file, Chain<?> blockChain) {
+        File myObj;
+        try {
+            myObj = new File("filename.txt");
+            if (myObj.createNewFile()) {
+                System.out.println("File created: " + myObj.getName() + "...");
+            } else {
+                System.out.println("File already exists. Writing on it...");
+            }
+        }
+        catch (IOException e) {
+            System.out.println("An error occurred opening " + file);
+            e.printStackTrace();
+        }
     }
 
     public static boolean load(String file) {
