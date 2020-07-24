@@ -37,4 +37,12 @@ public final class Util {
         }
         return hexString.toString();
     }
+
+    public static boolean save(String file) {
+
+    }
+
+    public static boolean load(String file) {
+
+    }
 }
