@@ -9,18 +9,19 @@ import java.util.Date;
 
 public final class Verifications {
     public static void main(String[] args) throws InterruptedException {
-//        StringChainTest();
+        StringChainTest();
 
         IntegerChainTest();
     }
 
-    private static void StringChainTest() throws InterruptedException {
+    private static void StringChainTest()  throws InterruptedException {
         StringChain chain = new StringChain("start", Util.HashType.SHA3_256);
 
         chain.add("PERL contributed $40");
         chain.add("RUBY contributed $12");
         chain.add("JAVA contributed $30");
-        chain.add(new String[] {"JS withdrew $120", "JS was denied - insufficient funds"});
+        chain.add("JS withdrew $120",
+                  "JS was denied - insufficient funds");
 
         Thread.sleep(1000);
 
@@ -62,7 +63,8 @@ public final class Verifications {
         chain.add(11111);
         chain.add(11112);
         chain.add(11123);
-        chain.add(11234, 12345);
+        chain.add(11234,
+                  12345);
 
         Thread.sleep(1000);
 
