@@ -10,8 +10,8 @@ import java.util.Date;
 public final class Verifications {
     public static void main(String[] args) throws InterruptedException {
         StringChainTest();
-
-        IntegerChainTest();
+//
+//        IntegerChainTest();
     }
 
     private static void StringChainTest()  throws InterruptedException {
@@ -49,6 +49,7 @@ public final class Verifications {
         System.out.println("\n is every block empty: " + chain.isEmpty());
         System.out.println("\n is current block empty: " + chain.isCurrentEmpty());
         System.out.println("\n block created soonest to now: " + chain.soonestTo(new Date()));
+        System.out.println("\n verified: " + chain.verify());
 
         System.out.println("\n all contents: ");
         String[][] blocks = chain.toArray();
@@ -98,6 +99,10 @@ public final class Verifications {
         for (Object[] contents : blocks) {
             System.out.println(Arrays.toString(contents));
         }
+
+    }
+
+    private static void SerializeTest() {
 
     }
 }

@@ -26,6 +26,14 @@ public class Block<T> {
         sealed = false;
     }
 
+    public Block(String id, String ts, String prevHash) {
+        this.id = Integer.parseInt(id);
+        this.timestamp = new Date(ts);
+        this.priorHash = Util.hexToBytes(prevHash);
+        items = new ArrayList<>();
+        sealed = false;
+    }
+
     public boolean addItem(T item) {
         if (sealed) return false;
 
@@ -103,12 +111,12 @@ public class Block<T> {
             items.append("\n - \"").append(item.getContents().toString()).append("\" (").append(item.getId()).append(")");
         }
 
-        return "BLOCK ID: " + id + "\n" +
-               "TIMESTAMP: " + timestamp.toString() + "\n" +
-               "PRIOR HASH: " + prior + "\n" +
-               "BLOCK HASH: " + proof + "\n" +
+        return Util.Token.BLOCK_ID.cont + id + "\n" +
+               Util.Token.TIMESTAMP.cont + timestamp.toString() + "\n" +
+               Util.Token.PRIOR_HASH.cont + prior + "\n" +
+               Util.Token.BLOCK_HASH.cont + proof + "\n" +
                "\n" +
-               "CONTENTS:" + items.toString();
+               Util.Token.CONTENTS.cont + items.toString();
     }
 
     // updates the item array size

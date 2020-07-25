@@ -38,4 +38,10 @@ public interface Chain<T> {
     // Converts entire chain to a 2D array
     T[][] toArray();
 
+    // Returns a serializable string of the chain
+    String serialize();
+
+    // Returns true if the chain is intact, or false if the chain has been tampered with and the hashes don't match up.
+    boolean verify();
+
 }

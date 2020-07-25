@@ -12,9 +12,10 @@ public final class BlockChain implements Chain<Object> {
     private final Util.HashType hashType;
     private final List<Block<Object>> blocks;
     private Block<Object> current;
+    private final byte[] genesisHash;
 
     public BlockChain(String genesisSeed, Util.HashType hashType) {
-        byte[] genesisHash = Util.byteHash(genesisSeed, hashType);
+        genesisHash = Util.byteHash(genesisSeed, hashType);
         blocks = new ArrayList<>();
         current = new Block<>(0, genesisHash);
         this.hashType = hashType;
@@ -133,9 +134,40 @@ public final class BlockChain implements Chain<Object> {
     }
 
     @Override
+    public String serialize() {
+        return this.toString()
+                .replaceAll(Util.Token.BORDER.cont, Util.Token.SERIAL_BORDER.cont)
+                .replaceAll(Util.Token.BLOCK_ID.cont, "")
+                .replaceAll(Util.Token.TIMESTAMP.cont, "")
+                .replaceAll(Util.Token.PRIOR_HASH.cont, "")
+                .replaceAll(Util.Token.BLOCK_HASH.cont, "")
+                .replaceFirst(Util.Token.SERIAL_BORDER.cont, "");
+    }
+
+    @Override
+    public boolean verify() {
+        byte[] currentHash = genesisHash;
+        for (Block<Object> block : blocks) {
+            byte[] hash = block.getProofHash();
+            String blockHash = Util.bytesToHex(hash);
+            String context = block.toString().replace(blockHash, "[ Not created yet ]");
+
+            if (Util.byteHash(context, Util.HashType.SHA_256) != hash)
+                if (Util.byteHash(context, Util.HashType.SHA3_256) != hash)
+                    return false;
+
+            if (block.getPriorHash() != currentHash)
+                return false;
+
+            currentHash = block.getProofHash();
+        }
+
+        return current.getPriorHash() == currentHash;
+    }
+
+    @Override
     public String toString() {
-        String border = "==================================================\n" +
-                        "==================================================\n";
+        String border = Util.Token.BORDER.cont;
         StringBuilder chain = new StringBuilder();
         for (Block<Object> block : blocks) {
             chain.append(border).append(block.toString()).append("\n");

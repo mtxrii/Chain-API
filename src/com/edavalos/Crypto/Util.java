@@ -1,6 +1,10 @@
 package com.edavalos.Crypto;
 
-import java.io.File;
+import com.edavalos.Crypto.Chains.StringChain;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -11,6 +15,24 @@ public final class Util {
     public enum HashType {
         SHA_256,
         SHA3_256
+    }
+
+    public enum Token {
+        BORDER("==================================================\n" +
+                     "==================================================\n"),
+        SERIAL_BORDER("-+-+-+-+-+-+-+-+-\n"),
+        BLOCK_ID("BLOCK ID: "),
+        TIMESTAMP("TIMESTAMP: "),
+        PRIOR_HASH("PRIOR HASH: "),
+        BLOCK_HASH("BLOCK HASH: "),
+        CONTENTS("CONTENTS:");
+
+
+        public final String cont;
+
+        Token(String cont) {
+            this.cont = cont;
+        }
     }
 
     public static byte[] byteHash(String str, HashType type) {
@@ -40,23 +62,45 @@ public final class Util {
         return hexString.toString();
     }
 
-    public static boolean save(String file, Chain<?> blockChain) {
-        File myObj;
+    public static byte[] hexToBytes(String s) {
+        int len = s.length();
+        byte[] data = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
+                    + Character.digit(s.charAt(i+1), 16));
+        }
+        return data;
+    }
+
+    public static boolean save(String fileName, Chain<?> blockChain) {
+        FileWriter fileObj;
         try {
-            myObj = new File("filename.txt");
-            if (myObj.createNewFile()) {
-                System.out.println("File created: " + myObj.getName() + "...");
-            } else {
-                System.out.println("File already exists. Writing on it...");
-            }
+            fileObj = new FileWriter(fileName);
+            fileObj.write(blockChain.serialize());
+            fileObj.close();
+            return true;
         }
         catch (IOException e) {
-            System.out.println("An error occurred opening " + file);
-            e.printStackTrace();
+            return false;
         }
     }
 
-    public static boolean load(String file) {
+    public static StringChain load(String file) {
+        try {
+            BufferedReader lineReader = new BufferedReader(new FileReader(file));
+            String line = lineReader.readLine();
 
+//            StringChain chain = new StringChain()
+            while (line != null) {
+                // do stuff
+
+
+
+                line = lineReader.readLine();
+            }
+        }
+        catch (IOException e) {
+            return null;
+        }
     }
 }
