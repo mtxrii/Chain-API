@@ -29,7 +29,7 @@ CONTENTS:
 ==================================================
 ```
 
-## Whats This For?
+# Whats This For?
 You've probably heard of cryptocurrencies, which are money exchange systems that record transactions in large scale public blockchains. The reason blockchains are used is because any data stored in them is guaranteed to never change. And it turns out having a permanent log of un-alterable receipts is pretty useful in various applications. Some examples include...
 * Product license certificates
 * Money lending
@@ -43,7 +43,7 @@ However in the context of this java library, some smaller scale uses might be...
 * Game kill & death logs
 * Database table creation
 
-### How does it work?
+# How does it work?
 
 ![](https://spheregen.com/wp-content/uploads/2019/04/blockchain.png)
 
@@ -51,4 +51,4 @@ A [blockchain](https://en.wikipedia.org/wiki/Blockchain#Structure) is essentiall
 
 Most large scale blockchains are decentralized, with each contributor having a local copy of the constantly-updated chain. However this API is only meant to be used for blockchains local to one runtime.
 
-## Usage
+# Usage
