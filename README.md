@@ -1,5 +1,5 @@
 # Chain API
-A simple blockchain utility to permanently archive records of any type. Also allows for easy visualization of all the data.
+A simple blockchain utility to permanently archive and visualize records of any type.
 
 ```
 ==================================================
@@ -43,8 +43,12 @@ However in the context of this java library, some smaller scale uses might be...
 * Game kill & death logs
 * Database table creation
 
-### How does it work?
+# How does it work?
 
 ![](https://spheregen.com/wp-content/uploads/2019/04/blockchain.png)
 
-A blockchain is essentially just a series of blocks, or nodes. Each node contains an id, a timestamp, and a hash of the previous node, along with whatever data you store in it. Conventionally, every x entries to a block, or every predetermied time interval, the block is sealed. A hash for everything in this block is then generated, which is stored in the next block. This way every block contains a hash of the previous one, so if any alterations are made to the data in one block, that block's hash would need to be re-evaluated, changing the hash of the next block, and every block after that. So the validity of the information in the blocks after the most recent one can be easily verified.
+A [blockchain](https://en.wikipedia.org/wiki/Blockchain#Structure) is essentially just a series of blocks, or nodes. Each node contains an id, a timestamp, and a hash of the previous node, along with whatever data you store in it. Conventionally, every x entries to a block, or every predetermied time interval, the block is sealed. A hash for everything in this block is then generated, which is stored in the next block. This way every block contains a hash of the previous one, so if any alterations are made to the data in one block, that block's hash would need to be re-evaluated, changing the hash of the next block, and every block after that. So the validity of the information in the blocks after the most recent one can be easily verified.
+
+Most large scale blockchains are decentralized, with each contributor having a local copy of the constantly-updated chain. However this API is only meant to be used for blockchains local to one runtime.
+
+# Usage
