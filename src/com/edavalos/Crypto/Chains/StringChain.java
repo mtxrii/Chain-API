@@ -12,10 +12,10 @@ public final class StringChain implements Chain<String> {
     private final Util.HashType hashType;
     private final List<Block<String>> blocks;
     private Block<String> current;
-    private final byte[] genesisHash;
+    private final String genesisHash;
 
     public StringChain(String genesisSeed, Util.HashType hashType) {
-        genesisHash = Util.byteHash(genesisSeed, hashType);
+        genesisHash = Util.bytesToHex(Util.byteHash(genesisSeed, hashType));
         blocks = new ArrayList<>();
         current = new Block<>(0, genesisHash);
         this.hashType = hashType;
@@ -146,23 +146,22 @@ public final class StringChain implements Chain<String> {
 
     @Override
     public boolean verify() {
-        byte[] currentHash = genesisHash;
+        String currentHash = genesisHash;
         for (Block<String> block : blocks) {
-            byte[] hash = block.getProofHash();
-            String blockHash = Util.bytesToHex(hash);
+            String blockHash = block.getProofHash();
             String context = block.toString().replace(blockHash, "[ Not created yet ]");
 
-            if (Util.byteHash(context, Util.HashType.SHA_256) != hash)
-                if (Util.byteHash(context, Util.HashType.SHA3_256) != hash)
+            if (!Util.bytesToHex(Util.byteHash(context, Util.HashType.SHA_256)).equals(blockHash))
+                if (!Util.bytesToHex(Util.byteHash(context, Util.HashType.SHA3_256)).equals(blockHash))
                     return false;
 
-            if (block.getPriorHash() != currentHash)
+            if (!block.getPriorHash().equals(currentHash))
                 return false;
 
             currentHash = block.getProofHash();
         }
 
-        return current.getPriorHash() == currentHash;
+        return current.getPriorHash().equals(currentHash);
     }
 
     @Override

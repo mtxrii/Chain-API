@@ -62,16 +62,6 @@ public final class Util {
         return hexString.toString();
     }
 
-    public static byte[] hexToBytes(String s) {
-        int len = s.length();
-        byte[] data = new byte[len / 2];
-        for (int i = 0; i < len; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
-                    + Character.digit(s.charAt(i+1), 16));
-        }
-        return data;
-    }
-
     public static boolean save(String fileName, Chain<?> blockChain) {
         FileWriter fileObj;
         try {
@@ -85,22 +75,22 @@ public final class Util {
         }
     }
 
-    public static StringChain load(String file) {
-        try {
-            BufferedReader lineReader = new BufferedReader(new FileReader(file));
-            String line = lineReader.readLine();
-
+//    public static StringChain load(String file) {
+//        try {
+//            BufferedReader lineReader = new BufferedReader(new FileReader(file));
+//            String line = lineReader.readLine();
+//
 //            StringChain chain = new StringChain()
-            while (line != null) {
-                // do stuff
-
-
-
-                line = lineReader.readLine();
-            }
-        }
-        catch (IOException e) {
-            return null;
-        }
-    }
+//            while (line != null) {
+//                // do stuff
+//
+//
+//
+//                line = lineReader.readLine();
+//            }
+//        }
+//        catch (IOException e) {
+//            return null;
+//        }
+//    }
 }

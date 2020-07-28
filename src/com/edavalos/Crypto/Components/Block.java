@@ -11,14 +11,14 @@ import java.lang.reflect.Array;
 public class Block<T> {
     private final int id;
     private final Date timestamp;
-    private byte[] proofHash;
-    private final byte[] priorHash;
+    private String proofHash;
+    private final String priorHash;
     private final List<Item<T>> items;
     private boolean sealed;
 
     private T[] itemArray;
 
-    public Block(int id, byte[] previousBlockHash) {
+    public Block(int id, String previousBlockHash) {
         this.id = id;
         timestamp = new Date();
         priorHash = previousBlockHash;
@@ -29,7 +29,7 @@ public class Block<T> {
     public Block(String id, String ts, String prevHash) {
         this.id = Integer.parseInt(id);
         this.timestamp = new Date(ts);
-        this.priorHash = Util.hexToBytes(prevHash);
+        this.priorHash = prevHash;
         items = new ArrayList<>();
         sealed = false;
     }
@@ -42,11 +42,11 @@ public class Block<T> {
         return true;
     }
 
-    public byte[] getPriorHash() {
+    public String getPriorHash() {
         return priorHash;
     }
 
-    public byte[] getProofHash() {
+    public String getProofHash() {
         return sealed ? proofHash : null;
     }
 
@@ -82,11 +82,13 @@ public class Block<T> {
         return items.size();
     }
 
-    public void seal(Util.HashType hash) {
+    public void seal(Util.HashType hashType) {
         if (sealed) return;
 
         sealed = true;
-        proofHash = Util.byteHash(this.toString(), hash);
+        byte[] hash = Util.byteHash(this.toString(), hashType);
+        assert hash != null;
+        proofHash = Util.bytesToHex(hash);
     }
 
 /** BLOCK ID: _id_
@@ -103,8 +105,8 @@ public class Block<T> {
  */
     @Override
     public String toString() {
-        String proof = (this.getProofHash() != null) ? Util.bytesToHex(this.getProofHash()) : "[ Not created yet ]";
-        String prior = Util.bytesToHex(this.getPriorHash());
+        String proof = (this.getProofHash() != null) ? this.getProofHash() : "[ Not created yet ]";
+        String prior = this.getPriorHash();
 
         StringBuilder items = new StringBuilder();
         for (Item<T> item : this.items) {

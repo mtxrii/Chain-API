@@ -12,6 +12,17 @@ public final class Verifications {
         StringChainTest();
 //
 //        IntegerChainTest();
+
+//        StringChain chain = new StringChain("start", Util.HashType.SHA_256);
+//        chain.add("Thing 1");
+//        chain.add("Thing 2");
+//        chain.add("Thing 3");
+//        chain.nextBlock();
+//        chain.add("Thing 4");
+//        chain.add("Thing 5");
+//
+//        System.out.println(chain.toString());
+//        System.out.println("\nverify: " + chain.verify());
     }
 
     private static void StringChainTest()  throws InterruptedException {
