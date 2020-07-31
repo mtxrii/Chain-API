@@ -7,6 +7,7 @@ import com.edavalos.Crypto.Util;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public final class BlockChain implements Chain<Object> {
     private final Util.HashType hashType;
@@ -137,12 +138,12 @@ public final class BlockChain implements Chain<Object> {
     @Override
     public String serialize() {
         return this.toString()
-                .replaceAll(Util.Token.BORDER.cont, Util.Token.SERIAL_BORDER.cont)
-                .replaceAll(Util.Token.BLOCK_ID.cont, "ID")
-                .replaceAll(Util.Token.TIMESTAMP.cont, "TS")
-                .replaceAll(Util.Token.PRIOR_HASH.cont, "PH")
-                .replaceAll(Util.Token.BLOCK_HASH.cont, "BH")
-                .replaceFirst(Util.Token.SERIAL_BORDER.cont, "HT " + this.hashType.name());
+                .replace(Util.Token.BORDER.cont, Util.Token.SERIAL_BORDER.cont)
+                .replace(Util.Token.BLOCK_ID.cont, "ID ")
+                .replace(Util.Token.TIMESTAMP.cont, "TS ")
+                .replace(Util.Token.PRIOR_HASH.cont, "PH ")
+                .replace(Util.Token.BLOCK_HASH.cont, "BH ")
+                .replaceFirst(Pattern.quote(Util.Token.SERIAL_BORDER.cont), "HT " + this.hashType.name());
     }
 
     @Override
