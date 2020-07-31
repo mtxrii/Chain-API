@@ -12,6 +12,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class Util {
 
@@ -78,26 +80,102 @@ public final class Util {
         }
     }
 
-//    public static StringChain load(String file) {
-//        try {
-//            BufferedReader lineReader = new BufferedReader(new FileReader(file));
-//            String line = lineReader.readLine();
-//
-//            List<Block<String>> blocks = new ArrayList<>();
-//            Util.HashType hashType;
-//            String genesisHash;
-//            String id, ts, ph, bh;
-//            while (line != null) {
-//                String[] parts = line.split(" ");
-//                if (parts[0].equals("HT")) hashType = parts[1];
-//
-//
-//
-//                line = lineReader.readLine();
-//            }
-//        }
-//        catch (IOException e) {
-//            return null;
-//        }
-//    }
+    public static StringChain load(String file) {
+        List<Block<String>> blocks = new ArrayList<>();
+        Block<String> current = null;
+
+        Util.HashType hashType = HashType.SHA_256;
+        String genesisHash = "";
+        boolean onFirst = true;
+
+        String id = "";
+        String ts = "";
+        String ph = "";
+        String bh = "";
+
+        try {
+            BufferedReader lineReader = new BufferedReader(new FileReader(file));
+            String line = lineReader.readLine();
+
+            while (line != null) {
+                if (line.strip().equals("")) {
+                    line = lineReader.readLine();
+                    continue;
+                }
+
+                String[] parts = line.strip().split(" ");
+                String tag = parts[0];
+                switch (tag) {
+                    case "HT" -> {
+                        if (parts.length != 3) return null;
+                        else if (parts[1].equals("SHA3_256ID")) hashType = HashType.SHA3_256;
+                        else if (parts[1].equals("SHA_256ID"))  hashType = HashType.SHA_256;
+
+                        if (!isNumeric(parts[2])) return null;
+                        id = parts[2];
+                    }
+                    case "ID" -> {
+                        if (parts.length != 2) return null;
+                        if (!isNumeric(parts[1])) return null;
+                        id = parts[1];
+                    }
+                    case "TS" -> {
+                        if (parts.length != 7) return null;
+                        ts = line.strip().replace(tag + " ", "");
+                    }
+                    case "PH" -> {
+                        if (parts.length != 2) return null;
+                        ph = parts[1];
+
+                        if (onFirst) {
+                            genesisHash = parts[1];
+                            onFirst = false;
+                        }
+                    }
+                    case "BH" -> {
+                        if (parts.length < 2) return null;
+                        bh = line.strip().replace(tag + " ", "");
+                    }
+                    case "CONTENTS:" -> {
+                        if (parts.length != 1) return null;
+                        if (current != null) return null;
+                        if (bh == null) return null;
+                        current = new Block<>(id, ts, ph, bh);
+
+                    }
+                    case "-" -> {
+                        Matcher matcher = Pattern.compile("\"(.*?)\"").matcher(line);
+                        if (!matcher.find()) return null;
+                        if (current == null) return null;
+                        current.addItem(matcher.group(1));
+                    }
+                    case "-+-+-+-+-+-+-+-+-" -> {
+                        if (current == null) return null;
+                        blocks.add(current);
+                        current = null;
+                        id = null;
+                        ts = null;
+                        ph = null;
+                        bh = null;
+                    }
+                }
+
+                line = lineReader.readLine();
+            }
+        }
+        catch (IOException e) {
+            return null;
+        }
+
+        return new StringChain(genesisHash, hashType, blocks);
+    }
+
+    private static boolean isNumeric(String str) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
+    }
 }

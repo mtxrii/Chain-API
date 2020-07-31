@@ -15,6 +15,7 @@ public class Block<T> {
     private final String priorHash;
     private final List<Item<T>> items;
     private boolean sealed;
+    private final boolean manual;
 
     private T[] itemArray;
 
@@ -24,6 +25,7 @@ public class Block<T> {
         priorHash = previousBlockHash;
         items = new ArrayList<>();
         sealed = false;
+        manual = false;
     }
 
     public Block(String id, String ts, String prevHash, String blockHash) {
@@ -31,6 +33,7 @@ public class Block<T> {
         this.timestamp = new Date(ts);
         this.priorHash = prevHash;
         items = new ArrayList<>();
+        manual = true;
 
         if (!blockHash.equals("[ Not created yet ]")) {
             sealed = true;
@@ -42,7 +45,7 @@ public class Block<T> {
     }
 
     public boolean addItem(T item) {
-        if (sealed) return false;
+        if (sealed && !manual) return false;
 
         Item<T> newItem = new Item<>(items.size(), item);
         items.add(newItem);
@@ -121,7 +124,8 @@ public class Block<T> {
 
         StringBuilder items = new StringBuilder();
         for (Item<T> item : this.items) {
-            items.append("\n - \"").append(item.getContents().toString()).append("\" (").append(item.getId()).append(")");
+            items.append("\n - \"").append(item.getContents().toString().replace("\"", "'"))
+                    .append("\" (").append(item.getId()).append(")");
         }
 
         return Util.Token.BLOCK_ID.cont + id + "\n" +

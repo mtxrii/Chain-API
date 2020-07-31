@@ -12,8 +12,10 @@ public final class Tests {
 //        StringChainTest();
 //
 //        IntegerChainTest();
-
-        SerializeTest();
+//
+//        SerializeTest();
+//
+//        ReadTest();
 
     }
 
@@ -112,7 +114,7 @@ public final class Tests {
         chain.add("RUBY contributed $12");
         chain.add("JAVA contributed $30");
         chain.add("JS withdrew $120",
-                "JS was denied - insufficient funds");
+                  "JS was denied - \"insufficient\" funds");
 
         Thread.sleep(1000);
 
@@ -129,5 +131,28 @@ public final class Tests {
         chain.add("...business as usual");
 
         Util.save("HashSrc.txt", chain);
+    }
+
+    private static void ReadTest() {
+        StringChain chain = Util.load("HashSrc.txt");
+
+        if (chain == null) return;
+
+        System.out.println(chain.toString());
+        System.out.println("\n number of blocks: " + chain.size());
+        System.out.println("\n total number of items: " + chain.totalItems());
+        System.out.println("\n block with 'RUST': " + chain.find("RUST withdrew $20"));
+        System.out.println("\n block with 'HTML': " + chain.find("HTML did summ"));
+        System.out.println("\n contents of block 1: " + Arrays.toString(chain.getContents(1)));
+        System.out.println("\n is every block empty: " + chain.isEmpty());
+        System.out.println("\n is current block empty: " + chain.isCurrentEmpty());
+        System.out.println("\n block created soonest to now: " + chain.soonestTo(new Date()));
+        System.out.println("\n verified: " + chain.verify());
+
+        System.out.println("\n all contents: ");
+        String[][] blocks = chain.toArray();
+        for (String[] contents : blocks) {
+            System.out.println(Arrays.toString(contents));
+        }
     }
 }
