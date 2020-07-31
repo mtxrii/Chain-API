@@ -52,3 +52,59 @@ A [blockchain](https://en.wikipedia.org/wiki/Blockchain#Structure) is essentiall
 Most large scale blockchains are decentralized, with each contributor having a local copy of the constantly-updated chain. This API allows for saving to and reading from files containing blockchains, making it easy to have decentralized blockchains on different runtimes all synchronizing with (and continuously verifying) one file.
 
 # Usage
+
+### Full docs [here](link)
+
+Make a new blockchain with only a genesis seed and a specified hash type.
+``` java
+// BlockChains can hold any type of objects in their blocks.
+BlockChain bChain = new BlockChain("origin", Util.HashType.SHA_256);
+// StringChains are explicitly for text.
+StringChain sChain = new StringChain("seed", Util.HashType.SHA3_256);
+```
+Options for hash types are `SHA_256` and `SHA3_256`
+
+Every chain has a head block, which is where new data is stored. When this block is sealed, a new one is created containing the hash of the previous one.
+```java
+// Add some data.
+example_chain.add("[ party X ] transfered _$20_ to [ party A ]");
+example_chain.add("[ party M ] transfered _$90_ to [ party D ]");
+example_chain.add("[ party D ] transfered _$30_ to [ party F ]");
+
+// Seal this block and move on to the next.
+example_chain.nextBlock();
+
+// Add more data.
+example_chain.add("[ party A ] transfered _$5_ to [ party D ]");
+```
+
+
+Now if we visualize the blockchain at this state with `example_chain.toString()` we get:
+```
+==================================================
+==================================================
+BLOCK ID: 0
+TIMESTAMP: Thu Jul 30 23:53:40 PDT 2020
+PRIOR HASH: 5646f1a87a6d20703d9dde40167e25f610b92aadfc6c79fbbbd6bca46ff2db49
+BLOCK HASH: ee5fe2dc09782035c3fb25c592ff82c5f613551ddda4b4abe43ef12d59b16f7f
+
+CONTENTS:
+ - "[ party X ] transfered _$20_ to [ party A ]" (0)
+ - "[ party M ] transfered _$90_ to [ party D ]" (1)
+ - "[ party D ] transfered _$30_ to [ party F ]" (2)
+==================================================
+==================================================
+BLOCK ID: 1
+TIMESTAMP: Thu Jul 30 23:53:41 PDT 2020
+PRIOR HASH: ee5fe2dc09782035c3fb25c592ff82c5f613551ddda4b4abe43ef12d59b16f7f
+BLOCK HASH: [ Not created yet ]
+
+CONTENTS:
+ - "[ party A ] transfered _$5_ to [ party D ]" (0)
+==================================================
+==================================================
+```
+
+The last block will never have a hash because it will always accept new data, until `example_chain.nextBlock()` is called, sealing the last block and making a new head block.
+
+Chains have a multitude of methods to manipulate and obtain information from them. Some examples include `totalItems()`, `find()`, `toArray()`, and `verify()`. Read more at the [docs](link) or check out the blockchains' [interface file](https://github.com/mtxrii/Chain-API/blob/master/src/com/edavalos/Crypto/Chain.java) directly.
