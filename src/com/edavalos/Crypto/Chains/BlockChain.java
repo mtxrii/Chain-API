@@ -38,6 +38,7 @@ public final class BlockChain implements Chain<Object> {
 
     @Override
     public boolean add(Object... items) {
+        if (items.length < 1) return true;
         if (!current.addItem(items[0])) return false;
         for (int i = 1; i < items.length; i++) {
             current.addItem(items[i]);
@@ -137,11 +138,11 @@ public final class BlockChain implements Chain<Object> {
     public String serialize() {
         return this.toString()
                 .replaceAll(Util.Token.BORDER.cont, Util.Token.SERIAL_BORDER.cont)
-                .replaceAll(Util.Token.BLOCK_ID.cont, "")
-                .replaceAll(Util.Token.TIMESTAMP.cont, "")
-                .replaceAll(Util.Token.PRIOR_HASH.cont, "")
-                .replaceAll(Util.Token.BLOCK_HASH.cont, "")
-                .replaceFirst(Util.Token.SERIAL_BORDER.cont, "");
+                .replaceAll(Util.Token.BLOCK_ID.cont, "ID")
+                .replaceAll(Util.Token.TIMESTAMP.cont, "TS")
+                .replaceAll(Util.Token.PRIOR_HASH.cont, "PH")
+                .replaceAll(Util.Token.BLOCK_HASH.cont, "BH")
+                .replaceFirst(Util.Token.SERIAL_BORDER.cont, "HT " + this.hashType.name());
     }
 
     @Override

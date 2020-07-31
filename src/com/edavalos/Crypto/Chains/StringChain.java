@@ -7,6 +7,7 @@ import com.edavalos.Crypto.Util;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public final class StringChain implements Chain<String> {
     private final Util.HashType hashType;
@@ -19,6 +20,19 @@ public final class StringChain implements Chain<String> {
         blocks = new ArrayList<>();
         current = new Block<>(0, genesisHash);
         this.hashType = hashType;
+    }
+
+    public StringChain(String genesisHash, Util.HashType hashType, List<Block<String>> blocksToAdd) {
+        this.genesisHash = genesisHash;
+        this.hashType = hashType;
+        this.blocks = new ArrayList<>();
+        for (Block<String> block : blocksToAdd) {
+            if (!block.isSealed()) {
+                current = block;
+                break;
+            }
+            blocks.add(block);
+        }
     }
 
     @Override
@@ -38,6 +52,7 @@ public final class StringChain implements Chain<String> {
 
     @Override
     public boolean add(String... items) {
+        if (items.length < 1) return true;
         if (!current.addItem(items[0])) return false;
         for (int i = 1; i < items.length; i++) {
             current.addItem(items[i]);
@@ -136,12 +151,12 @@ public final class StringChain implements Chain<String> {
     @Override
     public String serialize() {
         return this.toString()
-                .replaceAll(Util.Token.BORDER.cont, Util.Token.SERIAL_BORDER.cont)
-                .replaceAll(Util.Token.BLOCK_ID.cont, "")
-                .replaceAll(Util.Token.TIMESTAMP.cont, "")
-                .replaceAll(Util.Token.PRIOR_HASH.cont, "")
-                .replaceAll(Util.Token.BLOCK_HASH.cont, "")
-                .replaceFirst(Util.Token.SERIAL_BORDER.cont, "");
+                   .replace(Util.Token.BORDER.cont, Util.Token.SERIAL_BORDER.cont)
+                   .replace(Util.Token.BLOCK_ID.cont, "ID ")
+                   .replace(Util.Token.TIMESTAMP.cont, "TS ")
+                   .replace(Util.Token.PRIOR_HASH.cont, "PH ")
+                   .replace(Util.Token.BLOCK_HASH.cont, "BH ")
+                   .replaceFirst(Pattern.quote(Util.Token.SERIAL_BORDER.cont), "HT " + this.hashType.name());
     }
 
     @Override

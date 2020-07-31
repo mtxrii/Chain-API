@@ -26,12 +26,19 @@ public class Block<T> {
         sealed = false;
     }
 
-    public Block(String id, String ts, String prevHash) {
+    public Block(String id, String ts, String prevHash, String blockHash) {
         this.id = Integer.parseInt(id);
         this.timestamp = new Date(ts);
         this.priorHash = prevHash;
         items = new ArrayList<>();
-        sealed = false;
+
+        if (!blockHash.equals("[ Not created yet ]")) {
+            sealed = true;
+            proofHash = blockHash;
+        }
+        else {
+            sealed = false;
+        }
     }
 
     public boolean addItem(T item) {
@@ -69,6 +76,10 @@ public class Block<T> {
 
     public boolean isEmpty() {
         return items.isEmpty();
+    }
+
+    public boolean isSealed() {
+        return sealed;
     }
 
     public boolean contains(T thing) {

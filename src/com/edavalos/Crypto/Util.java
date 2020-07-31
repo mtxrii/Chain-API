@@ -1,6 +1,7 @@
 package com.edavalos.Crypto;
 
 import com.edavalos.Crypto.Chains.StringChain;
+import com.edavalos.Crypto.Components.Block;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -9,6 +10,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class Util {
 
@@ -80,9 +83,13 @@ public final class Util {
 //            BufferedReader lineReader = new BufferedReader(new FileReader(file));
 //            String line = lineReader.readLine();
 //
-//            StringChain chain = new StringChain()
+//            List<Block<String>> blocks = new ArrayList<>();
+//            Util.HashType hashType;
+//            String genesisHash;
+//            String id, ts, ph, bh;
 //            while (line != null) {
-//                // do stuff
+//                String[] parts = line.split(" ");
+//                if (parts[0].equals("HT")) hashType = parts[1];
 //
 //
 //

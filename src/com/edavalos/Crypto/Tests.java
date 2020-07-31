@@ -7,22 +7,14 @@ import com.edavalos.Crypto.Chains.StringChain;
 import java.util.Arrays;
 import java.util.Date;
 
-public final class Verifications {
+public final class Tests {
     public static void main(String[] args) throws InterruptedException {
-        StringChainTest();
+//        StringChainTest();
 //
 //        IntegerChainTest();
 
-//        StringChain chain = new StringChain("start", Util.HashType.SHA_256);
-//        chain.add("Thing 1");
-//        chain.add("Thing 2");
-//        chain.add("Thing 3");
-//        chain.nextBlock();
-//        chain.add("Thing 4");
-//        chain.add("Thing 5");
-//
-//        System.out.println(chain.toString());
-//        System.out.println("\nverify: " + chain.verify());
+        SerializeTest();
+
     }
 
     private static void StringChainTest()  throws InterruptedException {
@@ -113,7 +105,29 @@ public final class Verifications {
 
     }
 
-    private static void SerializeTest() {
+    private static void SerializeTest() throws InterruptedException {
+        StringChain chain = new StringChain("start", Util.HashType.SHA3_256);
 
+        chain.add("PERL contributed $40");
+        chain.add("RUBY contributed $12");
+        chain.add("JAVA contributed $30");
+        chain.add("JS withdrew $120",
+                "JS was denied - insufficient funds");
+
+        Thread.sleep(1000);
+
+        chain.nextBlock();
+        chain.add("RUST withdrew $20");
+        chain.add("C++ contributed $10");
+
+        Thread.sleep(1000);
+
+        chain.nextBlock();
+        chain.add("ERROR - SECURITY BREACH");
+        chain.add("nvm");
+        chain.discardBlock();
+        chain.add("...business as usual");
+
+        Util.save("HashSrc.txt", chain);
     }
 }
