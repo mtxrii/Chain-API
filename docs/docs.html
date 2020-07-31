@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>About us - Chain API</title>
+    <meta name="description" content="A versatile java blockchain library to store tamper-sensitive data.">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Asap+Condensed">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/styles.min.css">
+</head>
+
+<body style="background-color: #d5d5d5;">
+    <nav class="navbar navbar-light navbar-expand-lg fixed-top" id="mainNav">
+        <div class="container"><a class="navbar-brand" href="index.html">Chain API</a><button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
+            <div
+                class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="nav navbar-nav ml-auto">
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="docs.html">documentation</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="https://github.com/mtxrii/Chain-API">github</a></li>
+                </ul>
+        </div>
+        </div>
+    </nav>
+    <header class="masthead" style="background: url(https://images.unsplash.com/photo-1592422143638-98add7caceea?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1050&amp;q=80) center / cover no-repeat;">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 mx-auto">
+                    <div class="site-heading">
+                        <h1>Docs</h1><span class="subheading">How do you use this?</span></div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-lg-8 mx-auto">
+                <div>
+                    <h1 style="font-family: 'Asap Condensed', sans-serif;font-weight: normal;font-size: 55px;">Intro</h1>
+                    <p>To create a new BlockChain object, you only need a genesis string and a HashType.</p><code style="color: #c57f01;">BlockChain chain = new BlockChain("genesis string", Util.HashType.SHA3_256)</code>
+                    <p>If your blockchain will only store string data, it is preferred to use a StringChain.</p><code>StringChain chain = new StringChain("genesis", Util.HashType.SHA3_256)<br></code>
+                    <p>The genesis string is what will be used to generate the previous hash for the first block. The hash type just specifies whether the <em>SHA 256</em> or the <em>SHA-3 </em>hashing algorithm will be used. The <a href="https://crypto.stackexchange.com/questions/68307/what-is-the-difference-between-sha-3-and-sha-256">difference</a>&nbsp;comes
+                        down to preformance vs security.</p>
+                    <p>At their essence, blockchains look something like this:</p><img class="shadow-sm" src="https://camo.githubusercontent.com/8e4e6b3afadc747948013603d336d4c3b517346d/68747470733a2f2f73706865726567656e2e636f6d2f77702d636f6e74656e742f75706c6f6164732f323031392f30342f626c6f636b636861696e2e706e67"
+                        style="width: 685px;border-radius: 7px;border-style: solid;border-color: #c57f01;">
+                    <p>If any data in any block is altered, so would its hash, invalidating the condition that the next block hold the previous block's hash. This process can be explained more <a href="https://en.wikipedia.org/wiki/Blockchain#Structure">in depth</a>,
+                        but what it means for us now is that no modifications can happen on any block except the last.</p>
+                    <p>Because of this, adding data is simple.</p><code>chain.add("party X transferred $20 to party A");<br>chain.add("party M transferred $90 to party D");<br>chain.add("party D transferred $30 to party F");<br></code>
+                    <p>Typically every x entries, or every predetermined time period, the head block is sealed and data begins being stored in a new head block. Every time this happens, the hash of the previous head is established, stored in the new head,
+                        and the data is recorded forever. Commanding this is also a simple process.</p><code>chain.nextBlock();</code>
+                    <p>Now all new data added will go in a new block. Run nextBlock() again and further data will go in a third block.</p>
+                    <p>To see your blockchain at this point, a simple toString() will do.</p><img class="shadow-sm" src="https://i.imgur.com/zL0Uotc.png?1" style="width: 685px;border-radius: 7px;border-style: solid;border-color: #c57f01;">
+                    <p>The full list of what you can do with your blockchain is as follows:</p>
+                </div>
+                <div>
+                    <h1 style="font-family: 'Asap Condensed', sans-serif;font-weight: normal;font-size: 55px;">Methods</h1>
+                    <div>
+                        <h3 class="text-uppercase" style="color: rgba(33,37,41,0.8);font-family: 'Asap Condensed', sans-serif;font-weight: normal;margin-top: 30px;">Next Block</h3><span style="color: rgba(33,37,41,0.67);">Seals current head block and creates new one. Returns false if failed<br></span><code>boolean nextBlock();<br></code></div>
+                    <div>
+                        <h3 class="text-uppercase" style="color: rgba(33,37,41,0.8);font-family: 'Asap Condensed', sans-serif;font-weight: normal;margin-top: 30px;">Add single object</h3><span style="color: rgba(33,37,41,0.67);">Adds something to the head block. Returns false if failed<br></span><code>boolean add(Object item);<br></code></div>
+                    <div>
+                        <h3 class="text-uppercase" style="color: rgba(33,37,41,0.8);font-family: 'Asap Condensed', sans-serif;font-weight: normal;margin-top: 30px;">Add multiple objects</h3><span style="color: rgba(33,37,41,0.67);">Adds every parameter to the head block. Returns false if failed<br></span><code>boolean add(Object... items);<br></code></div>
+                    <div>
+                        <h3 class="text-uppercase" style="color: rgba(33,37,41,0.8);font-family: 'Asap Condensed', sans-serif;font-weight: normal;margin-top: 30px;">size</h3><span style="color: rgba(33,37,41,0.67);">Returns amount of blocks in chain including unsealed head<br></span><code>int size();<br></code></div>
+                    <div>
+                        <h3 class="text-uppercase" style="color: rgba(33,37,41,0.8);font-family: 'Asap Condensed', sans-serif;font-weight: normal;margin-top: 30px;">Total items</h3><span style="color: rgba(33,37,41,0.67);">Returns total number of items in every block of chain<br></span><code>int totalItems();<br></code></div>
+                    <div>
+                        <h3 class="text-uppercase" style="color: rgba(33,37,41,0.8);font-family: 'Asap Condensed', sans-serif;font-weight: normal;margin-top: 30px;">Discard head</h3><span style="color: rgba(33,37,41,0.67);">Discards current head and everything in it. Creates a new one to replace it.<br></span><code>void discardBlock();<br></code></div>
+                    <div>
+                        <h3 class="text-uppercase" style="color: rgba(33,37,41,0.8);font-family: 'Asap Condensed', sans-serif;font-weight: normal;margin-top: 30px;">find</h3><span style="color: rgba(33,37,41,0.67);">Returns id of the first block that contains a given object. Returns -1 if it cannot be found.<br></span><code>int find(Object item);<br></code></div>
+                    <div>
+                        <h3 class="text-uppercase" style="color: rgba(33,37,41,0.8);font-family: 'Asap Condensed', sans-serif;font-weight: normal;margin-top: 30px;">soonest to</h3><span style="color: rgba(33,37,41,0.67);">Returns id of the block with a timestamp nearest to the one provided, or -1 if chain is empty.<br></span><code>int soonestTo(Date timestamp);<br></code></div>
+                    <div>
+                        <h3 class="text-uppercase" style="color: rgba(33,37,41,0.8);font-family: 'Asap Condensed', sans-serif;font-weight: normal;margin-top: 30px;">get contents</h3><span style="color: rgba(33,37,41,0.67);">Returns an array holding everything in a specific block of given id.<br></span><code>Object[] getContents(int blockID);<br></code></div>
+                    <div>
+                        <h3 class="text-uppercase" style="color: rgba(33,37,41,0.8);font-family: 'Asap Condensed', sans-serif;font-weight: normal;margin-top: 30px;">to array</h3><span style="color: rgba(33,37,41,0.67);">Converts entire chain to a 2D array<br></span><code>Object[][] toArray();<br></code></div>
+                    <div>
+                        <h3 class="text-uppercase" style="color: rgba(33,37,41,0.8);font-family: 'Asap Condensed', sans-serif;font-weight: normal;margin-top: 30px;">is current empty</h3><span style="color: rgba(33,37,41,0.67);">Checks if current head block is empty.<br></span><code>boolean isCurrentEmpty();<br></code></div>
+                    <div>
+                        <h3 class="text-uppercase" style="color: rgba(33,37,41,0.8);font-family: 'Asap Condensed', sans-serif;font-weight: normal;margin-top: 30px;">is everything empty</h3><span style="color: rgba(33,37,41,0.67);">Checks if every block in chain is empty.<br></span><code>boolean isCurrentEmpty();<br></code></div>
+                    <div>
+                        <h3 class="text-uppercase" style="color: rgba(33,37,41,0.8);font-family: 'Asap Condensed', sans-serif;font-weight: normal;margin-top: 30px;">verify</h3><span style="color: rgba(33,37,41,0.67);">Attempts to recreate hashes of every block to see if any data has been modified. Returns true if chain is intact, or false if any sealed blocks in chain have been tampered with in the slightest.<br></span><code>boolean verify();<br></code></div>
+                    <div>
+                        <h3 class="text-uppercase" style="color: rgba(33,37,41,0.8);font-family: 'Asap Condensed', sans-serif;font-weight: normal;margin-top: 30px;">to string</h3><span style="color: rgba(33,37,41,0.67);">Returns a visual representation of all the data in the chain, like the image in the section above<br></span><code>String toString();<br></code></div>
+                    <div>
+                        <h3 class="text-uppercase" style="color: rgba(33,37,41,0.8);font-family: 'Asap Condensed', sans-serif;font-weight: normal;margin-top: 30px;">serialize</h3><span style="color: rgba(33,37,41,0.67);">Returns a tokenized version of toString() that is used internally to save chain to files.&nbsp;<br></span><code>String serialize();<br></code></div>
+                </div>
+                <div>
+                    <h1 style="font-family: 'Asap Condensed', sans-serif;font-weight: normal;font-size: 55px;margin-top: 50px;">Save &amp; Load</h1>
+                    <p>Blockchains work best decentralized, with various sources having a copy of the chain and saving to a file when changes are made.</p>
+                    <p>To save a blockchain to a file, simply do</p><code style="color: #c57f01;">Util.save("filename.txt", chain);</code>
+                    <p>Internally, this runs serialize() on the chain and prints it to a specified file. It should look something like this:</p><img class="shadow-sm" src="https://i.imgur.com/Qs0QLxT.png" style="width: 685px;border-radius: 7px;border-style: solid;border-color: #c57f01;">
+                    <p>To load this file onto a blockchain object, do:</p><code>StringChain chain = Util.load("filename.txt")<br></code>
+                    <p>As of now, only StringChains can be loaded from files. This is because blockchains can only be saved in text files. Database support will be added in the future.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 mx-auto">
+                    <ul class="list-inline text-center">
+                        <li class="list-inline-item"><span class="fa-stack fa-lg"><a href="https://twitter.com/mtxrii" target="_blank"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-twitter fa-stack-1x fa-inverse" style="color: #d5d5d5;"></i></a></span></li>
+                        <li class="list-inline-item"><span class="fa-stack fa-lg"><a href="https://github.com/mtxrii" target="_blank"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-github fa-stack-1x fa-inverse" style="color: #d5d5d5;"></i></a></span></li>
+                    </ul>
+                    <p class="text-muted copyright">Copyright&nbsp;©&nbsp;Mtxrii 2020</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/script.min.js"></script>
+</body>
+
+</html>
