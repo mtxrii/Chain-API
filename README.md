@@ -53,7 +53,7 @@ Most large scale blockchains are decentralized, with each contributor having a l
 
 # Usage
 
-### Full docs [here](link)
+### Full docs [here](http://blockchain.edavalos.com/docs.html)
 
 Make a new blockchain with only a genesis seed and a specified hash type.
 ``` java
@@ -107,4 +107,4 @@ CONTENTS:
 
 The last block will never have a hash because it will always accept new data, until `example_chain.nextBlock()` is called, sealing the last block and making a new head block.
 
-Chains have a multitude of methods to manipulate and obtain information from them. Some examples include `totalItems()`, `find()`, `toArray()`, and `verify()`. Read more at the [docs](link) or check out the blockchains' [interface file](https://github.com/mtxrii/Chain-API/blob/master/src/com/edavalos/Crypto/Chain.java) directly.
+Chains have a multitude of methods to manipulate and obtain information from them. Some examples include `totalItems()`, `find()`, `toArray()`, and `verify()`. Read more at the [docs](http://blockchain.edavalos.com/index.html) or check out the blockchains' [interface file](https://github.com/mtxrii/Chain-API/blob/master/src/com/edavalos/Crypto/Chain.java) directly.
